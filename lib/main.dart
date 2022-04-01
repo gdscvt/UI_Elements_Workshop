@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'college.dart';
+import 'colleges.dart';
 
 void main() {
   //Need Material App to get MediaQuery Data
@@ -12,8 +13,8 @@ void main() {
         // Route is a string that acts like a code
         // to run widget
         routes: {
-          '/home': (context) => const Home()
-
+          '/home': (context) => const Home(),
+          '/colleges': (context) => const Colleges()
         },
     ));
 }
@@ -30,12 +31,7 @@ class _HomeState extends State<Home>{
   final collegeNameContr = TextEditingController();
   final collegeInitialsContr = TextEditingController();
   List<College> listOfColleges = [];
-  final ScrollController controller = new ScrollController();
-
-  @override
-  void initState(){
-      super.initState();
-  }
+  final ScrollController controller = ScrollController();
 
   void addCollege(String collegeName, String collegeID) {
     setState(() {
@@ -60,7 +56,14 @@ class _HomeState extends State<Home>{
       );
     });
   }
+  void sendData(){
+    setState(() {
+      Navigator.pushNamed(context, '/colleges',
+          arguments: {'listOfColleges': listOfColleges}
+      );
+    });
 
+  }
   @override
   Widget build(BuildContext context) {
     //Scaffold has appBar and body attributes
@@ -70,15 +73,24 @@ class _HomeState extends State<Home>{
             centerTitle: true,
             title: const Text("College List"),
             backgroundColor: Colors.red,
+            leading: Builder(
+            builder: (BuildContext context){
+              return IconButton(onPressed: () {
+                //Navigator.pushNamedAndRemoveUntil(context, '/add_food', (route) => false);
+                sendData();}, icon: Icon(Icons.arrow_back));
+            },
+          ),
             actions: <Widget>[
               Container(
                 width: MediaQuery.of(context).size.width*(1/6),
                 child: Builder(builder: (BuildContext context){
                   return IconButton(onPressed: () {
                     setState(() {
-                      listOfColleges.removeLast();
+                      if(listOfColleges.isNotEmpty) {
+                        listOfColleges.removeLast();
+                      }
                     });
-                  }, icon: Icon(
+                  }, icon: const Icon(
                     Icons.delete
                   ));
                 },)
@@ -138,8 +150,23 @@ class _HomeState extends State<Home>{
                     itemCount: listOfColleges.length,
                     reverse: true,
                     itemBuilder: (context, index){
-                  return ListTile(
-                    title: Text(listOfColleges[index].collegeID + ' ' + listOfColleges[index].collegeName),
+                  return Card(
+                    color: Colors.green,
+                    child: ListTile(
+                     title: Row(
+                       mainAxisAlignment: MainAxisAlignment.spaceAround,
+                       children: <Widget>[
+                         Container(
+                             width: MediaQuery.of(context).size.width*(1/10),
+                             child: Text(listOfColleges[index].collegeID)),
+                         Container(
+                             width: MediaQuery.of(context).size.width*(1/2),
+                             child: Text(
+                                 listOfColleges[index].collegeName,
+                             textAlign: TextAlign.right,)),
+                       ],
+                     ),
+                    ),
                   );
                 }
                 ),

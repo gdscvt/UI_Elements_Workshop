@@ -63,8 +63,7 @@ class _HomeState extends State<Home> {
   // for the page to receive as params
   void sendData() {
     setState(() {
-      Navigator.pushNamed(context, '/colleges',
-          arguments: {'listOfColleges': listOfColleges});
+      Navigator.pushNamed(context, '/colleges');
     });
   }
 
@@ -79,19 +78,22 @@ class _HomeState extends State<Home> {
         backgroundColor: Colors.red,
         leading: IconButton(
           onPressed: () => sendData(),
-          icon: const Icon(Icons.arrow_back),
+          icon: const Icon(Icons.school),
         ),
         actions: <Widget>[
-          IconButton(
-            onPressed: () {
-              setState(() {
-                if (listOfColleges.isNotEmpty) {
-                  listOfColleges.removeLast();
-                }
-              });
-            },
-            icon: const Icon(Icons.delete),
-            iconSize: MediaQuery.of(context).size.width * (1 / 50),
+          Container(
+            padding: EdgeInsets.only(right: 50),
+            child: IconButton(
+              onPressed: () {
+                setState(() {
+                  if (listOfColleges.isNotEmpty) {
+                    listOfColleges.removeLast();
+                  }
+                });
+              },
+              icon: const Icon(Icons.delete),
+              iconSize: MediaQuery.of(context).size.width * (1 / 50),
+            ),
           ),
         ],
       ),
@@ -135,15 +137,13 @@ class _HomeState extends State<Home> {
               },
             ),
             ListView.builder(
-              physics: const ClampingScrollPhysics(),
-              scrollDirection: Axis.vertical,
               shrinkWrap: true,
-              itemCount: listOfColleges.length,
               reverse: true,
+              itemCount: listOfColleges.length,
               itemBuilder: (context, index) {
                 return generateWidget(
-                  collegeNameContr.text,
-                  collegeInitialsContr.text,
+                  listOfColleges[index].collegeName,
+                  listOfColleges[index].collegeID,
                   context,
                 );
               },

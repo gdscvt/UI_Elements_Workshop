@@ -25,10 +25,12 @@ class _CollegesState extends State<Colleges> {
           icon: const Icon(Icons.arrow_back),
         ),
       ),
+      // wrap with safe area
       body: Center(
         child: Container(
           width: MediaQuery.of(context).size.width * (1 / 1.5),
           height: MediaQuery.of(context).size.height * (1 / 2),
+          alignment: Alignnment.center,
           child: LayoutBuilder(
             builder: (context, constraints) => Container(
               width: constraints.maxWidth * (1 / 2),
@@ -57,7 +59,7 @@ class _CollegesState extends State<Colleges> {
                         backgroundColor: Colors.red,
                         child: Text('ASU'),
                       ),
-                      label: Text('Arizona State University'),
+                      label: Text('Alabama State University'),
                     ),
                     Chip(
                       avatar: CircleAvatar(
